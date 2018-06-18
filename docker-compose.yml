@@ -1,0 +1,37 @@
+version: '3'
+
+volumes:
+  data:
+    driver: local
+
+services:
+  api:
+    command: python api.py
+    build:
+      context: .
+      args:
+        SOURCE_DIR: ./src/api
+    volumes:
+      - ./src/api:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - redis
+    restart: always
+
+  predict:
+    command: python main.py
+    build:
+      context: .
+      args:
+        SOURCE_DIR: ./src/predict
+    volumes:
+      - ./src/predict:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:4.0.9-alpine
+    restart: always
+    volumes:
+      - data:/data

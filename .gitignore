@@ -1,0 +1,4 @@
+__pycache__
+.pytest_cache
+.ash_history
+.python_history
